@@ -3,18 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- Metadatos PWA -->
     <title>MedicalCare</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#4DB6AC">
     <link rel="apple-touch-icon" href="logo.png">
     <link rel="icon" href="logo.png" type="image/png">
+    
+    <!-- Metadatos de SEO y Redes Sociales -->
+    <meta name="description" content="MedicalCare es una aplicación progresiva para el cuidado de la salud, ofreciendo herramientas personalizadas para el monitoreo de condiciones crónicas.">
+    <meta name="keywords" content="MedicalCare, salud, PWA, renal, cardíaco, autismo, bienestar, agenda, medicamentos">
+    
+    <!-- Open Graph para compartir en redes sociales -->
+    <meta property="og:title" content="MedicalCare - Cuidado Personalizado al Alcance de tu Mano">
+    <meta property="og:description" content="Una herramienta PWA diseñada para ayudarte a gestionar tu salud de manera eficiente y agradable.">
+    <meta property="og:image" content="https://johnbeta1977.github.io/renal002/logo.png">
+    <meta property="og:url" content="https://johnbeta1977.github.io/renal002/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card para compartir en Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@tu_usuario_twitter">
+    <meta name="twitter:title" content="MedicalCare">
+    <meta name="twitter:description" content="Una herramienta PWA diseñada para ayudarte a gestionar tu salud de manera eficiente y agradable.">
+    <meta name="twitter:image" content="https://johnbeta1977.github.io/renal002/logo.png">
 
     <!-- Estilos y Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         /* --- RESET Y CONFIGURACIÓN GENERAL --- */
@@ -23,6 +42,7 @@
             --secondary-color: #81C784; /* Verde claro */
             --accent-color: #FF8A65; /* Coral suave */
             --text-color: #37474F; /* Gris oscuro */
+            --text-light-color: #ECEFF1; /* Gris muy claro */
             --bg-light: #FFFFFF;
             --bg-soft: #E0F2F1;
             --border-radius: 12px;
@@ -62,7 +82,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px 30px;
-            background-color: var(--bg-light);
+            background: linear-gradient(to right, #BBDEFB, #81D4FA); /* Azul claro */
             box-shadow: var(--shadow);
             z-index: 1000;
             transition: all var(--transition-speed) ease;
@@ -70,7 +90,7 @@
 
         .app-header.scrolled {
             padding: 5px 30px;
-            background-color: rgba(255, 255, 255, 0.45);
+            background-color: rgba(187, 222, 251, 0.55);
             backdrop-filter: blur(10px);
         }
 
@@ -86,7 +106,8 @@
         .header-title {
             font-size: 1.8em;
             font-weight: 700;
-            color: var(--primary-color);
+            color: var(--text-color);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
             transition: font-size var(--transition-speed) ease;
         }
         
@@ -94,6 +115,10 @@
             font-size: 1.5em;
         }
 
+        .header-settings {
+            position: relative;
+        }
+        
         .header-settings svg {
             width: 30px;
             height: 30px;
@@ -101,11 +126,43 @@
             fill: var(--text-color);
             transition: transform var(--transition-speed) ease;
         }
-
-        .header-settings svg:hover {
-            transform: rotate(45deg);
+        
+        .header-settings.open svg {
+            transform: rotate(90deg);
         }
         
+        .settings-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: var(--bg-light);
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            padding: 10px;
+            min-width: 200px;
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            animation: fadeIn 0.3s ease-out;
+            z-index: 1000;
+        }
+
+        .header-settings.open .settings-menu {
+            display: flex;
+        }
+        
+        .settings-menu a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .settings-menu a:hover {
+            background-color: var(--bg-soft);
+        }
+
         /* --- CONTENIDO PRINCIPAL Y SECCIONES --- */
         .main-container {
             max-width: 800px;
@@ -148,10 +205,11 @@
         /* Estilos para las opciones de perfil */
         .profile-options {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Más angostos */
             gap: 20px;
+            justify-content: center;
         }
-
+        
         .profile-options label {
             display: flex;
             flex-direction: column;
@@ -180,12 +238,105 @@
         }
 
         .profile-options .icon {
-            font-size: 3em;
+            font-size: 2.5em; /* Iconos más pequeños */
             margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 1em; /* Para mantener la altura uniforme */
         }
         
         .profile-options .text {
             font-weight: 600;
+        }
+
+        /* Estilos para los campos de los formularios */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #CFD8DC;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        /* Estilos para el área de Bienestar */
+        .search-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 12px 40px 12px 15px;
+            border: 1px solid #CFD8DC;
+            border-radius: 50px;
+            font-size: 1em;
+        }
+        
+        .search-container .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #B0BEC5;
+        }
+        
+        .accordion-item {
+            border: 1px solid #CFD8DC;
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--bg-soft);
+            cursor: pointer;
+        }
+
+        .accordion-header h3 {
+            font-size: 1.1em;
+            margin: 0;
+        }
+
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .accordion-header.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            padding: 0 15px;
+            background-color: var(--bg-light);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+        }
+
+        .accordion-content.active {
+            max-height: 500px; /* Valor arbitrario grande */
+            padding: 15px;
         }
 
         /* --- BOTONES --- */
@@ -205,6 +356,13 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(77, 182, 172, 0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
         }
 
         .btn:hover {
@@ -216,6 +374,7 @@
             background: #B0BEC5;
             cursor: not-allowed;
             box-shadow: none;
+            animation: none;
         }
 
         /* --- FOOTER --- */
@@ -241,16 +400,84 @@
             text-decoration: none;
             font-size: 0.8em;
             transition: color 0.3s ease;
+            position: relative;
         }
         
         .footer-item.active, .footer-item:hover {
             color: var(--primary-color);
         }
-
+        
+        .footer-item .icon {
+            font-size: 20px;
+        }
+        
         .footer-item svg {
             width: 28px;
             height: 28px;
             margin-bottom: 4px;
+            fill: currentColor;
+        }
+
+        .footer-menu-modal {
+            position: fixed;
+            bottom: 60px;
+            right: 15px;
+            background-color: var(--bg-light);
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            padding: 10px;
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            z-index: 999;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .footer-menu-modal a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: background-color 0.3s ease;
+        }
+        
+        .footer-menu-modal a:hover {
+            background-color: var(--bg-soft);
+        }
+
+        /* --- MENSAJE FLOTANTE --- */
+        .floating-message {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary-color);
+            color: var(--text-light-color);
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: var(--shadow);
+            display: none;
+            animation: slideIn 0.5s ease-out, fadeOut 0.5s 2.5s forwards;
+            z-index: 1001;
+            font-weight: 600;
+        }
+        
+        @keyframes slideIn {
+            from { bottom: -80px; opacity: 0; }
+            to { bottom: 80px; opacity: 1; }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
         }
 
         /* --- RESPONSIVE DESIGN --- */
@@ -290,7 +517,6 @@
                 grid-template-columns: 1fr;
             }
         }
-
     </style>
 </head>
 <body>
@@ -303,10 +529,25 @@
         <div class="header-title">
             MedicalCare
         </div>
-        <div class="header-settings">
+        <div class="header-settings" id="headerSettings">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.479,10.092c-0.262-0.94-0.635-1.822-1.116-2.636l1.04-2.34c0.236-0.53,0.078-1.163-0.382-1.48L17.54,2.155 c-0.459-0.318-1.071-0.239-1.448,0.188l-2.06,2.31c-0.869-0.393-1.791-0.674-2.756-0.817L11.01,1.353 c-0.126-0.587-0.638-1.02-1.255-1.02H8.241c-0.617,0-1.129,0.434-1.255,1.02L6.72,3.836C5.755,3.979,4.833,4.26,3.963,4.653 l-2.06-2.31c-0.377-0.426-0.989-0.506-1.448-0.188L-0.927,3.635c-0.46,0.317-0.618,0.95-0.382,1.48l1.04,2.34 C-0.732,8.27, -1.105,9.152,-1.367,10.092L-3.86,10.36c-0.587,0.127-1.02,0.638-1.02,1.255v2.788 c0,0.617,0.434,1.129,1.02,1.255l2.493,0.268c0.262,0.94,0.635,1.822,1.116,2.636l-1.04,2.34 c-0.236,0.53-0.078,1.163,0.382,1.48l1.482,1.022c0.459,0.318,1.071,0.239,1.448-0.188l2.06-2.31 c0.869,0.393,1.791,0.674,2.756,0.817l0.268,2.493c0.126,0.587,0.638,1.02,1.255,1.02h2.788c0.617,0,1.129-0.434,1.255-1.02 l0.268-2.493c0.965-0.143,1.887-0.424,2.756-0.817l2.06,2.31c0.377,0.426,0.989,0.506,1.448-0.188l1.482-1.022 c0.46-0.317,0.618-0.95,0.382-1.48l-1.04-2.34c0.481-0.814,0.854-1.696,1.116-2.636l2.493-0.268 c0.587-0.127,1.02-0.638,1.02-1.255V11.347c0-0.617-0.434-1.129-1.02-1.255L19.479,10.092z M12,15.5c-1.93,0-3.5-1.57-3.5-3.5 s1.57-3.5,3.5-3.5s3.5,1.57,3.5,3.5S13.93,15.5,12,15.5z"/></svg>
+            <div class="settings-menu" id="settingsMenu">
+                <a href="#" id="about-link"><i class="fa-solid fa-info-circle"></i> Quiénes Somos</a>
+                <a href="#" id="faq-link"><i class="fa-solid fa-question-circle"></i> Preguntas Frecuentes</a>
+            </div>
         </div>
     </header>
+    
+    <!-- Modales para Quiénes Somos y Preguntas Frecuentes -->
+    <div id="modal-container" class="modal-container" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modal-title"></h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-content" id="modal-content"></div>
+        </div>
+    </div>
 
     <!-- ===== CONTENIDO PRINCIPAL ===== -->
     <main class="main-container">
@@ -318,25 +559,33 @@
             <div class="profile-options">
                 <input type="radio" id="profile-renal" name="profile" value="renal">
                 <label for="profile-renal">
-                    <span class="icon">💧</span>
+                    <span class="icon">
+                        <i class="fa-solid fa-droplet"></i>
+                    </span>
                     <span class="text">Renal</span>
                 </label>
 
                 <input type="radio" id="profile-cardiaco" name="profile" value="cardiaco">
                 <label for="profile-cardiaco">
-                    <span class="icon">❤️</span>
+                    <span class="icon">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </span>
                     <span class="text">Cardíaco</span>
                 </label>
 
                 <input type="radio" id="profile-atm" name="profile" value="atm">
                 <label for="profile-atm">
-                    <span class="icon">🧩</span>
+                    <span class="icon">
+                        <i class="fa-solid fa-puzzle-piece"></i>
+                    </span>
                     <span class="text">ATM Leve</span>
                 </label>
 
                 <input type="radio" id="profile-otro" name="profile" value="otro">
                 <label for="profile-otro">
-                    <span class="icon">➕</span>
+                    <span class="icon">
+                        <i class="fa-solid fa-plus"></i>
+                    </span>
                     <span class="text">Otro</span>
                 </label>
             </div>
@@ -345,11 +594,10 @@
             </div>
         </section>
 
-        <!-- PASO 2: SECCIONES ESPECÍFICAS (Ocultas por defecto) -->
+        <!-- PASO 2: SECCIONES ESPECÍFICAS -->
         <section id="step-specific" class="step-section">
-            <!-- El contenido se inyectará aquí con JS -->
             <div id="specific-content"></div>
-             <div class="button-container">
+            <div class="button-container">
                 <button class="btn" onclick="goToStep('step-meds')">Siguiente</button>
             </div>
         </section>
@@ -358,8 +606,16 @@
         <section id="step-meds" class="step-section">
             <h2>Medicamentos (Med/tos)</h2>
             <p class="subtitle">Gestiona aquí tu lista de medicamentos y recordatorios.</p>
-            <!-- Aquí iría el contenido para gestionar medicamentos -->
-             <div class="button-container">
+            <div class="form-group">
+                <label for="med-name">Nombre del medicamento</label>
+                <input type="text" id="med-name" placeholder="Ej: Losartán">
+            </div>
+            <div class="form-group">
+                <label for="med-dose">Dosis</label>
+                <input type="text" id="med-dose" placeholder="Ej: 50mg, una vez al día">
+            </div>
+            <!-- Más campos si son necesarios -->
+            <div class="button-container">
                 <button class="btn" onclick="goToStep('step-appointments')">Siguiente</button>
             </div>
         </section>
@@ -368,8 +624,16 @@
         <section id="step-appointments" class="step-section">
             <h2>Citas y Laboratorios</h2>
             <p class="subtitle">Lleva un registro de tus próximas citas médicas y resultados.</p>
-            <!-- Aquí iría el contenido para citas y labs -->
-             <div class="button-container">
+            <div class="form-group">
+                <label for="appointment-date">Fecha de la cita</label>
+                <input type="date" id="appointment-date">
+            </div>
+            <div class="form-group">
+                <label for="appointment-description">Descripción</label>
+                <textarea id="appointment-description" rows="3" placeholder="Ej: Cita con nefrólogo para revisión de creatinina"></textarea>
+            </div>
+            <!-- Más campos si son necesarios -->
+            <div class="button-container">
                 <button class="btn" onclick="goToStep('step-agenda')">Siguiente</button>
             </div>
         </section>
@@ -378,8 +642,16 @@
         <section id="step-agenda" class="step-section">
             <h2>Agenda</h2>
             <p class="subtitle">Guarda aquí tus números y contactos importantes.</p>
-            <!-- Aquí iría el contenido para la agenda -->
-             <div class="button-container">
+            <div class="form-group">
+                <label for="contact-name">Nombre</label>
+                <input type="text" id="contact-name" placeholder="Ej: Dr. Pérez (Cardiólogo)">
+            </div>
+            <div class="form-group">
+                <label for="contact-number">Teléfono</label>
+                <input type="tel" id="contact-number" placeholder="Ej: +57 300 123 4567">
+            </div>
+            <!-- Más campos si son necesarios -->
+            <div class="button-container">
                 <button class="btn" onclick="saveData()">Guardar</button>
             </div>
         </section>
@@ -388,7 +660,24 @@
         <section id="section-bienestar" class="step-section">
              <h2>Bienestar</h2>
              <p class="subtitle">Encuentra información y recursos para cuidar de ti.</p>
-             <!-- Aquí iría el contenido de bienestar con buscador y desplegables -->
+             <div class="search-container">
+                 <input type="text" placeholder="Buscar en Bienestar...">
+                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
+             </div>
+             <!-- Menús Desplegables de Bienestar -->
+             <div id="bienestar-accordion">
+                 <!-- Contenido inyectado por JS -->
+             </div>
+        </section>
+        
+        <!-- SECCIÓN DE PERFIL (Accesible desde el footer/menú) -->
+        <section id="section-profile-summary" class="step-section">
+             <h2>Resumen de Perfil</h2>
+             <p class="subtitle">Un vistazo rápido a tu información de salud.</p>
+             <!-- Contenido con la información del usuario inyectado por JS -->
+             <div id="profile-summary-content">
+                 <p>Aquí se mostrará un resumen de la información que has guardado.</p>
+             </div>
         </section>
         
     </main>
@@ -397,6 +686,14 @@
     <footer class="app-footer" id="appFooter">
         <!-- Los items se inyectarán aquí con JS -->
     </footer>
+    
+    <!-- Modal del menú del footer -->
+    <div id="footerMenuModal" class="footer-menu-modal">
+        <!-- Items inyectados por JS -->
+    </div>
+    
+    <!-- Mensaje flotante de confirmación -->
+    <div class="floating-message" id="floatingMessage"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -413,9 +710,13 @@
                         });
                 });
             }
-
-            // --- LÓGICA DEL HEADER ---
+            
+            // --- LÓGICA DEL HEADER Y MODAL ---
             const header = document.getElementById('appHeader');
+            const headerSettings = document.getElementById('headerSettings');
+            const settingsMenu = document.getElementById('settingsMenu');
+            
+            // Animación del header al hacer scroll
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 50) {
                     header.classList.add('scrolled');
@@ -423,7 +724,50 @@
                     header.classList.remove('scrolled');
                 }
             });
+            
+            // Lógica para abrir/cerrar el menú de ajustes
+            headerSettings.addEventListener('click', (e) => {
+                e.stopPropagation();
+                headerSettings.classList.toggle('open');
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!headerSettings.contains(e.target)) {
+                    headerSettings.classList.remove('open');
+                }
+            });
 
+            // Lógica para los links del modal del header
+            document.getElementById('about-link').addEventListener('click', () => {
+                showModal('Quiénes Somos', '<p>MedicalCare es una iniciativa de [Nombre de la Institución Desarrolladora], un equipo de expertos en tecnología y salud comprometidos con el bienestar de las personas.</p><p>Nuestra misión es empoderar a los pacientes con herramientas digitales intuitivas para el manejo de su salud diaria.</p>');
+            });
+
+            document.getElementById('faq-link').addEventListener('click', () => {
+                showModal('Preguntas Frecuentes', `
+                    <p><strong>¿Cómo instalo MedicalCare en mi dispositivo?</strong></p>
+                    <p>En la mayoría de los navegadores móviles, puedes añadir esta web a tu pantalla de inicio desde el menú. Busca una opción como "Añadir a pantalla de inicio" o "Instalar aplicación".</p>
+                    <p><strong>¿Cómo funcionan los formularios?</strong></p>
+                    <p>Simplemente llena los campos con la información relevante. Al presionar "Guardar", los datos se almacenarán de forma segura. En la próxima fase, estos datos se sincronizarán con Firebase.</p>
+                `);
+            });
+            
+            function showModal(title, content) {
+                const modalContainer = document.getElementById('modal-container');
+                document.getElementById('modal-title').textContent = title;
+                document.getElementById('modal-content').innerHTML = content;
+                modalContainer.style.display = 'flex';
+            }
+
+            document.querySelector('.close-modal').addEventListener('click', () => {
+                document.getElementById('modal-container').style.display = 'none';
+            });
+
+            window.addEventListener('click', (e) => {
+                if (e.target === document.getElementById('modal-container')) {
+                    document.getElementById('modal-container').style.display = 'none';
+                }
+            });
+            
             // --- LÓGICA DEL FORMULARIO MULTI-PASO ---
             const profileRadios = document.querySelectorAll('input[name="profile"]');
             const btnNextProfile = document.getElementById('btn-next-profile');
@@ -442,10 +786,45 @@
                     goToStep('step-specific');
                     setupSpecificStep(selectedProfile);
                     setupFooter(selectedProfile);
+                    setupBienestarContent(selectedProfile);
+                }
+            });
+            
+            // --- LÓGICA DEL FOOTER ---
+            const footerMenuModal = document.getElementById('footerMenuModal');
+            
+            document.getElementById('appFooter').addEventListener('click', (e) => {
+                // Cierra el modal si se hace clic fuera
+                if (e.target.closest('#menu-extra')) {
+                    e.preventDefault();
+                    footerMenuModal.style.display = footerMenuModal.style.display === 'flex' ? 'none' : 'flex';
+                } else if (!e.target.closest('#footerMenuModal')) {
+                    footerMenuModal.style.display = 'none';
+                }
+            });
+            
+            // Cierra el modal si se hace clic en cualquier lugar fuera de él
+            document.addEventListener('click', (e) => {
+                const footerMenuModal = document.getElementById('footerMenuModal');
+                const menuExtra = document.getElementById('menu-extra');
+                if (footerMenuModal.style.display === 'flex' && !footerMenuModal.contains(e.target) && e.target !== menuExtra && !menuExtra.contains(e.target)) {
+                    footerMenuModal.style.display = 'none';
+                }
+            });
+            
+            // Lógica para los desplegables de Bienestar
+            document.getElementById('bienestar-accordion').addEventListener('click', (e) => {
+                const header = e.target.closest('.accordion-header');
+                if (header) {
+                    const content = header.nextElementSibling;
+                    const isActive = header.classList.toggle('active');
+                    content.classList.toggle('active');
                 }
             });
         });
 
+        // --- FUNCIONES GLOBALES ---
+        
         function goToStep(stepId) {
             // Ocultar todas las secciones
             document.querySelectorAll('.step-section').forEach(section => {
@@ -457,37 +836,90 @@
                 nextStep.classList.add('active');
                 window.scrollTo(0, 0);
             }
+            
+            // Actualizar el estado 'active' del footer
+            document.querySelectorAll('.footer-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            const activeFooterItem = document.querySelector(`.footer-item[data-target="${stepId}"]`);
+            if (activeFooterItem) {
+                activeFooterItem.classList.add('active');
+            }
         }
         
         function setupSpecificStep(profile) {
             const contentDiv = document.getElementById('specific-content');
-            let title = '';
-            let description = '';
+            let contentHTML = '';
             
             switch(profile) {
                 case 'renal':
-                    title = 'BCM (Balance Hídrico)';
-                    description = 'Registra aquí tu peso seco y la ingesta/pérdida de líquidos para un control preciso.';
+                    contentHTML = `
+                        <h2>BCM (Balance Hídrico)</h2>
+                        <p class="subtitle">Registra aquí tu peso seco y la ingesta/pérdida de líquidos para un control preciso.</p>
+                        <div class="form-group">
+                            <label for="peso-seco">Peso seco (kg)</label>
+                            <input type="number" id="peso-seco" placeholder="Ej: 70.5">
+                        </div>
+                        <div class="form-group">
+                            <label for="liquidos-ingesta">Líquidos ingeridos (ml)</label>
+                            <input type="number" id="liquidos-ingesta" placeholder="Ej: 1500">
+                        </div>
+                        <div class="form-group">
+                            <label for="liquidos-perdida">Líquidos perdidos (ml)</label>
+                            <input type="number" id="liquidos-perdida" placeholder="Ej: 800">
+                        </div>
+                    `;
                     break;
                 case 'cardiaco':
-                    title = 'Cardiología';
-                    description = 'Monitorea tu presión arterial, frecuencia cardíaca y otros indicadores vitales.';
+                    contentHTML = `
+                        <h2>Cardiología</h2>
+                        <p class="subtitle">Monitorea tu presión arterial, frecuencia cardíaca y otros indicadores vitales.</p>
+                        <div class="form-group">
+                            <label for="presion-sistolica">Presión Sistólica (mmHg)</label>
+                            <input type="number" id="presion-sistolica" placeholder="Ej: 120">
+                        </div>
+                        <div class="form-group">
+                            <label for="presion-diastolica">Presión Diastólica (mmHg)</label>
+                            <input type="number" id="presion-diastolica" placeholder="Ej: 80">
+                        </div>
+                        <div class="form-group">
+                            <label for="frecuencia-cardiaca">Frecuencia Cardiaca (lpm)</label>
+                            <input type="number" id="frecuencia-cardiaca" placeholder="Ej: 75">
+                        </div>
+                    `;
                     break;
                 case 'atm':
-                    title = 'Apoyo ATM Leve';
-                    description = 'Herramientas y rutinas para gestionar estímulos y mantener el bienestar diario.';
+                    contentHTML = `
+                        <h2>Apoyo ATM Leve</h2>
+                        <p class="subtitle">Herramientas y rutinas para gestionar estímulos y mantener el bienestar diario.</p>
+                        <div class="form-group">
+                            <label for="estimulos-dia">Estímulos del día</label>
+                            <textarea id="estimulos-dia" rows="3" placeholder="Ej: Ruido fuerte en la calle, luz brillante en el supermercado"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="rutina-dia">Rutina de hoy</label>
+                            <textarea id="rutina-dia" rows="3" placeholder="Ej: Mañana: ejercicio, Tarde: lectura, Noche: meditación"></textarea>
+                        </div>
+                    `;
                     break;
                 case 'otro':
-                    title = 'Medical General';
-                    description = 'Un espacio flexible para registrar tus indicadores de salud generales.';
+                    contentHTML = `
+                        <h2>Medical General</h2>
+                        <p class="subtitle">Un espacio flexible para registrar tus indicadores de salud generales.</p>
+                        <div class="form-group">
+                            <label for="indicador-general-1">Indicador 1</label>
+                            <input type="text" id="indicador-general-1" placeholder="Ej: Nivel de glucosa">
+                        </div>
+                        <div class="form-group">
+                            <label for="valor-indicador-1">Valor</label>
+                            <input type="text" id="valor-indicador-1" placeholder="Ej: 105 mg/dL">
+                        </div>
+                    `;
                     break;
             }
             
-            contentDiv.innerHTML = `
-                <h2>${title}</h2>
-                <p class="subtitle">${description}</p>
-                <!-- Aquí puedes agregar los campos de formulario específicos para cada perfil -->
-            `;
+            contentDiv.innerHTML = contentHTML;
         }
         
         function setupFooter(profile) {
@@ -495,68 +927,191 @@
             footer.style.display = 'flex';
             let footerItems = '';
             
-            // Definimos los items del footer basados en el perfil
+            const profileIcons = {
+                'renal': '<i class="fa-solid fa-droplet"></i>',
+                'cardiaco': '<i class="fa-solid fa-heart-pulse"></i>',
+                'atm': '<i class="fa-solid fa-puzzle-piece"></i>',
+                'otro': '<i class="fa-solid fa-plus"></i>'
+            };
+            
             const items = {
-                renal: [
-                    { icon: '💧', text: 'BCM', target: 'step-specific' },
-                    { icon: '💊', text: 'Med/tos', target: 'step-meds' },
-                    { icon: '📅', text: 'Citas', target: 'step-appointments' },
+                'renal': [
+                    { icon: profileIcons[profile], text: 'BCM', target: 'step-specific' },
+                    { icon: '<i class="fa-solid fa-pills"></i>', text: 'Med/tos', target: 'step-meds' },
+                    { icon: '<i class="fa-solid fa-calendar-check"></i>', text: 'Citas', target: 'step-appointments' },
                 ],
-                cardiaco: [
-                    { icon: '❤️', text: 'Cardio', target: 'step-specific' },
-                    { icon: '💊', text: 'Med/tos', target: 'step-meds' },
-                    { icon: '📅', text: 'Citas', target: 'step-appointments' },
+                'cardiaco': [
+                    { icon: profileIcons[profile], text: 'Cardio', target: 'step-specific' },
+                    { icon: '<i class="fa-solid fa-pills"></i>', text: 'Med/tos', target: 'step-meds' },
+                    { icon: '<i class="fa-solid fa-calendar-check"></i>', text: 'Citas', target: 'step-appointments' },
                 ],
-                atm: [
-                    { icon: '🧩', text: 'ATM', target: 'step-specific' },
-                    { icon: '💊', text: 'Med/tos', target: 'step-meds' },
-                    { icon: '📅', text: 'Citas', target: 'step-appointments' },
+                'atm': [
+                    { icon: profileIcons[profile], text: 'ATM', target: 'step-specific' },
+                    { icon: '<i class="fa-solid fa-pills"></i>', text: 'Med/tos', target: 'step-meds' },
+                    { icon: '<i class="fa-solid fa-calendar-check"></i>', text: 'Citas', target: 'step-appointments' },
                 ],
-                otro: [
-                    { icon: '➕', text: 'Medical', target: 'step-specific' },
-                    { icon: '💊', text: 'Med/tos', target: 'step-meds' },
-                    { icon: '📅', text: 'Citas', target: 'step-appointments' },
+                'otro': [
+                    { icon: profileIcons[profile], text: 'Medical', target: 'step-specific' },
+                    { icon: '<i class="fa-solid fa-pills"></i>', text: 'Med/tos', target: 'step-meds' },
+                    { icon: '<i class="fa-solid fa-calendar-check"></i>', text: 'Citas', target: 'step-appointments' },
                 ]
             };
             
             const commonItems = [
                  { 
-                    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="6.5" r="1.5"/><circle cx="12" cy="17.5" r="1.5"/></svg>`, 
-                    text: 'Menú' 
-                }
+                    icon: '<i class="fa-solid fa-share-nodes"></i>', 
+                    text: 'Compartir', 
+                    target: 'share'
+                 },
+                 { 
+                    icon: '<i class="fa-solid fa-user"></i>',
+                    text: 'Perfil',
+                    target: 'section-profile-summary'
+                 },
+                 {
+                    icon: '<i class="fa-solid fa-book-open"></i>',
+                    text: 'Bienestar',
+                    target: 'section-bienestar'
+                 },
+                 {
+                    icon: '<i class="fa-solid fa-calendar-alt"></i>',
+                    text: 'Agenda',
+                    target: 'step-agenda'
+                 }
             ];
             
+            // Construye los items del footer principal
             const profileItems = items[profile] || items['otro'];
             
             profileItems.forEach(item => {
                 footerItems += `
-                    <a href="#" class="footer-item" onclick="event.preventDefault(); goToStep('${item.target}')">
+                    <a href="#" class="footer-item" data-target="${item.target}" onclick="event.preventDefault(); goToStep('${item.target}')">
                         <div class="icon">${item.icon}</div>
                         <span>${item.text}</span>
                     </a>
                 `;
             });
 
-            // Añadir el menú de 3 puntos
+            // Añadir el botón para el menú extra
             footerItems += `
                  <a href="#" class="footer-item" id="menu-extra">
-                    ${commonItems[0].icon}
-                    <span>${commonItems[0].text}</span>
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="6.5" r="1.5"/><circle cx="12" cy="17.5" r="1.5"/></svg>
+                    </div>
+                    <span>Menú</span>
                 </a>
             `;
             
             footer.innerHTML = footerItems;
             
-            // Aquí se añadiría la lógica para el menú emergente de 3 puntos
+            // Inyectar el contenido del menú extra en el modal
+            const footerMenuModal = document.getElementById('footerMenuModal');
+            footerMenuModal.innerHTML = '';
+            commonItems.forEach(item => {
+                if (item.target === 'share') {
+                     const shareButton = document.createElement('a');
+                     shareButton.href = '#';
+                     shareButton.innerHTML = `<div class="icon">${item.icon}</div><span>${item.text}</span>`;
+                     shareButton.addEventListener('click', (e) => {
+                         e.preventDefault();
+                         shareApp();
+                     });
+                     footerMenuModal.appendChild(shareButton);
+                } else {
+                    footerMenuModal.innerHTML += `
+                        <a href="#" onclick="event.preventDefault(); goToStep('${item.target}')">
+                            <div class="icon">${item.icon}</div><span>${item.text}</span>
+                        </a>
+                    `;
+                }
+            });
+            
+            // Si el perfil es 'renal', 'cardiaco', o 'atm', el perfil principal tiene su propia sección
+            // Así que no necesitamos el enlace 'Perfil' en el menú extra.
+            if (profileItems[0].target === 'step-specific') {
+                 const profileLink = footerMenuModal.querySelector('[data-target="section-profile-summary"]');
+                 if (profileLink) {
+                     profileLink.remove();
+                 }
+            }
+        }
+        
+        function setupBienestarContent(profile) {
+            const accordionDiv = document.getElementById('bienestar-accordion');
+            let contentHTML = '';
+            const bienestarData = {
+                renal: [
+                    { title: "Dieta y Nutrición Renal", content: "Consejos sobre alimentos bajos en sodio, potasio y fósforo. Recetas recomendadas y control de porciones." },
+                    { title: "Ejercicio y Estilo de Vida", content: "Importancia de la actividad física moderada. Recomendaciones para evitar el sedentarismo y mantener un peso saludable." },
+                    { title: "Manejo del Estrés", content: "Técnicas de relajación y meditación para reducir el estrés, que puede afectar la salud renal." }
+                ],
+                cardiaco: [
+                    { title: "Dieta Cardiosaludable", content: "Información sobre la dieta DASH, alimentos ricos en omega-3 y cómo reducir el colesterol." },
+                    { title: "Ejercicio Físico", content: "Guía de ejercicios seguros para el corazón. Frecuencia, intensidad y duración recomendadas." },
+                    { title: "Control de la Presión Arterial", content: "Consejos para medir y registrar tu presión arterial correctamente. Factores que la afectan." }
+                ],
+                atm: [
+                    { title: "Entorno y Sensibilidad", content: "Cómo adaptar el entorno para minimizar estímulos abrumadores. Herramientas de apoyo sensorial." },
+                    { title: "Rutinas y Estructura", content: "Importancia de las rutinas diarias. Ejemplos de horarios visuales y cómo usarlos para reducir la ansiedad." },
+                    { title: "Comunicación y Apoyo Social", content: "Estrategias para la comunicación efectiva. Enlaces a grupos de apoyo y recursos comunitarios." }
+                ],
+                otro: [
+                     { title: "Primeros Pasos hacia el Bienestar", content: "Información general sobre una dieta equilibrada, la importancia del agua y el descanso adecuado." },
+                     { title: "Tips para la Salud Mental", content: "Recursos para el cuidado de la salud mental, como técnicas de mindfulness y cómo reconocer señales de alerta." }
+                ]
+            };
+            
+            const data = bienestarData[profile] || bienestarData['otro'];
+            
+            data.forEach((item, index) => {
+                contentHTML += `
+                    <div class="accordion-item">
+                        <div class="accordion-header" id="accordion-header-${index}">
+                            <h3>${item.title}</h3>
+                            <i class="fa-solid fa-chevron-down accordion-icon"></i>
+                        </div>
+                        <div class="accordion-content" id="accordion-content-${index}">
+                            <p>${item.content}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            accordionDiv.innerHTML = contentHTML;
         }
 
         function saveData() {
             // Aquí irá la lógica para guardar los datos en Firebase
-            alert('¡Datos guardados con éxito! (Simulación)');
+            // (Esta parte se implementará en la fase de back-end)
+            showMessage('¡Datos guardados con éxito! (Simulación)');
             goToStep('step-profile'); // Volver al inicio o a un dashboard
             document.getElementById('appFooter').style.display = 'none'; // Ocultar footer
         }
-
+        
+        function showMessage(message) {
+            const messageBox = document.getElementById('floatingMessage');
+            messageBox.textContent = message;
+            messageBox.style.display = 'block';
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 3000);
+        }
+        
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'MedicalCare',
+                    text: 'Una aplicación para el cuidado de la salud personalizada.',
+                    url: 'https://johnbeta1977.github.io/renal002/',
+                }).then(() => {
+                    console.log('¡Compartido con éxito!');
+                }).catch((error) => {
+                    console.error('Error al compartir:', error);
+                });
+            } else {
+                 showMessage('La función de compartir no está disponible en este navegador.');
+            }
+        }
+        
     </script>
 </body>
 </html>
