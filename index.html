@@ -1,2 +1,549 @@
+<!DOCTYPE html>
 <html lang="es">
-  </html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Metadatos PWA -->
+    <title>MedicalCare</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4DB6AC">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <!-- Estilos y Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- RESET Y CONFIGURACIÓN GENERAL --- */
+        :root {
+            --primary-color: #4DB6AC; /* Verde azulado suave */
+            --secondary-color: #81C784; /* Verde claro */
+            --accent-color: #FF8A65; /* Coral suave */
+            --text-color: #37474F; /* Gris oscuro */
+            --bg-light: #FFFFFF;
+            --bg-soft: #E0F2F1;
+            --border-radius: 12px;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --transition-speed: 0.4s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: url('bg.jpg');
+            background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-top: 80px; /* Espacio para el header fijo */
+            padding-bottom: 70px; /* Espacio para el footer fijo */
+        }
+
+        /* --- HEADER --- */
+        .app-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: var(--bg-light);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .app-header.scrolled {
+            padding: 5px 30px;
+            background-color: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(10px);
+        }
+
+        .header-logo img {
+            height: 50px;
+            transition: height var(--transition-speed) ease;
+        }
+
+        .app-header.scrolled .header-logo img {
+            height: 40px;
+        }
+
+        .header-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary-color);
+            transition: font-size var(--transition-speed) ease;
+        }
+        
+        .app-header.scrolled .header-title {
+            font-size: 1.5em;
+        }
+
+        .header-settings svg {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            fill: var(--text-color);
+            transition: transform var(--transition-speed) ease;
+        }
+
+        .header-settings svg:hover {
+            transform: rotate(45deg);
+        }
+        
+        /* --- CONTENIDO PRINCIPAL Y SECCIONES --- */
+        .main-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .step-section {
+            background-color: var(--bg-light);
+            padding: 30px 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            display: none; /* Oculto por defecto */
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .step-section.active {
+            display: block; /* Visible cuando está activo */
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        p.subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #607D8B;
+        }
+
+        /* Estilos para las opciones de perfil */
+        .profile-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .profile-options label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: var(--bg-soft);
+            border-radius: var(--border-radius);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-options label:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        .profile-options input[type="radio"] {
+            display: none;
+        }
+
+        .profile-options input[type="radio"]:checked + label {
+            border-color: var(--accent-color);
+            background-color: #ffffff;
+            box-shadow: 0 8px 25px rgba(255, 138, 101, 0.3);
+        }
+
+        .profile-options .icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        
+        .profile-options .text {
+            font-weight: 600;
+        }
+
+        /* --- BOTONES --- */
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(77, 182, 172, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(77, 182, 172, 0.6);
+        }
+        
+        .btn:disabled {
+            background: #B0BEC5;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* --- FOOTER --- */
+        .app-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--bg-light);
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.08);
+            display: none; /* Oculto hasta que se elija perfil */
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+
+        .footer-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.8em;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-item.active, .footer-item:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-item svg {
+            width: 28px;
+            height: 28px;
+            margin-bottom: 4px;
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+            .app-header {
+                padding: 10px 15px;
+            }
+            .app-header.scrolled {
+                padding: 5px 15px;
+            }
+            .header-logo img {
+                height: 40px;
+            }
+            .app-header.scrolled .header-logo img {
+                height: 35px;
+            }
+            .header-title {
+                font-size: 1.4em;
+            }
+            .app-header.scrolled .header-title {
+                font-size: 1.2em;
+            }
+            .main-container {
+                margin: 20px auto;
+                padding: 10px;
+            }
+            .step-section {
+                padding: 20px;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+            .profile-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="app-header" id="appHeader">
+        <div class="header-logo">
+            <img src="logo.png" alt="MedicalCare Logo">
+        </div>
+        <div class="header-title">
+            MedicalCare
+        </div>
+        <div class="header-settings">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.479,10.092c-0.262-0.94-0.635-1.822-1.116-2.636l1.04-2.34c0.236-0.53,0.078-1.163-0.382-1.48L17.54,2.155 c-0.459-0.318-1.071-0.239-1.448,0.188l-2.06,2.31c-0.869-0.393-1.791-0.674-2.756-0.817L11.01,1.353 c-0.126-0.587-0.638-1.02-1.255-1.02H8.241c-0.617,0-1.129,0.434-1.255,1.02L6.72,3.836C5.755,3.979,4.833,4.26,3.963,4.653 l-2.06-2.31c-0.377-0.426-0.989-0.506-1.448-0.188L-0.927,3.635c-0.46,0.317-0.618,0.95-0.382,1.48l1.04,2.34 C-0.732,8.27, -1.105,9.152,-1.367,10.092L-3.86,10.36c-0.587,0.127-1.02,0.638-1.02,1.255v2.788 c0,0.617,0.434,1.129,1.02,1.255l2.493,0.268c0.262,0.94,0.635,1.822,1.116,2.636l-1.04,2.34 c-0.236,0.53-0.078,1.163,0.382,1.48l1.482,1.022c0.459,0.318,1.071,0.239,1.448-0.188l2.06-2.31 c0.869,0.393,1.791,0.674,2.756,0.817l0.268,2.493c0.126,0.587,0.638,1.02,1.255,1.02h2.788c0.617,0,1.129-0.434,1.255-1.02 l0.268-2.493c0.965-0.143,1.887-0.424,2.756-0.817l2.06,2.31c0.377,0.426,0.989,0.506,1.448-0.188l1.482-1.022 c0.46-0.317,0.618-0.95,0.382-1.48l-1.04-2.34c0.481-0.814,0.854-1.696,1.116-2.636l2.493-0.268 c0.587-0.127,1.02-0.638,1.02-1.255V11.347c0-0.617-0.434-1.129-1.02-1.255L19.479,10.092z M12,15.5c-1.93,0-3.5-1.57-3.5-3.5 s1.57-3.5,3.5-3.5s3.5,1.57,3.5,3.5S13.93,15.5,12,15.5z"/></svg>
+        </div>
+    </header>
+
+    <!-- ===== CONTENIDO PRINCIPAL ===== -->
+    <main class="main-container">
+
+        <!-- PASO 1: SELECCIÓN DE PERFIL -->
+        <section id="step-profile" class="step-section active">
+            <h2>Bienvenido/a</h2>
+            <p class="subtitle">Para personalizar tu experiencia, por favor selecciona tu perfil principal.</p>
+            <div class="profile-options">
+                <input type="radio" id="profile-renal" name="profile" value="renal">
+                <label for="profile-renal">
+                    <span class="icon">💧</span>
+                    <span class="text">Renal</span>
+                </label>
+
+                <input type="radio" id="profile-cardiaco" name="profile" value="cardiaco">
+                <label for="profile-cardiaco">
+                    <span class="icon">❤️</span>
+                    <span class="text">Cardíaco</span>
+                </label>
+
+                <input type="radio" id="profile-atm" name="profile" value="atm">
+                <label for="profile-atm">
+                    <span class="icon">🧩</span>
+                    <span class="text">ATM Leve</span>
+                </label>
+
+                <input type="radio" id="profile-otro" name="profile" value="otro">
+                <label for="profile-otro">
+                    <span class="icon">➕</span>
+                    <span class="text">Otro</span>
+                </label>
+            </div>
+            <div class="button-container">
+                <button class="btn" id="btn-next-profile" disabled>Siguiente</button>
+            </div>
+        </section>
+
+        <!-- PASO 2: SECCIONES ESPECÍFICAS (Ocultas por defecto) -->
+        <section id="step-specific" class="step-section">
+            <!-- El contenido se inyectará aquí con JS -->
+            <div id="specific-content"></div>
+             <div class="button-container">
+                <button class="btn" onclick="goToStep('step-meds')">Siguiente</button>
+            </div>
+        </section>
+
+        <!-- PASO 3: MEDICAMENTOS -->
+        <section id="step-meds" class="step-section">
+            <h2>Medicamentos (Med/tos)</h2>
+            <p class="subtitle">Gestiona aquí tu lista de medicamentos y recordatorios.</p>
+            <!-- Aquí iría el contenido para gestionar medicamentos -->
+             <div class="button-container">
+                <button class="btn" onclick="goToStep('step-appointments')">Siguiente</button>
+            </div>
+        </section>
+        
+        <!-- PASO 4: CITAS Y LABORATORIOS -->
+        <section id="step-appointments" class="step-section">
+            <h2>Citas y Laboratorios</h2>
+            <p class="subtitle">Lleva un registro de tus próximas citas médicas y resultados.</p>
+            <!-- Aquí iría el contenido para citas y labs -->
+             <div class="button-container">
+                <button class="btn" onclick="goToStep('step-agenda')">Siguiente</button>
+            </div>
+        </section>
+        
+        <!-- PASO 5: AGENDA -->
+        <section id="step-agenda" class="step-section">
+            <h2>Agenda</h2>
+            <p class="subtitle">Guarda aquí tus números y contactos importantes.</p>
+            <!-- Aquí iría el contenido para la agenda -->
+             <div class="button-container">
+                <button class="btn" onclick="saveData()">Guardar</button>
+            </div>
+        </section>
+        
+        <!-- SECCIÓN DE BIENESTAR (Accesible desde el footer/menú) -->
+        <section id="section-bienestar" class="step-section">
+             <h2>Bienestar</h2>
+             <p class="subtitle">Encuentra información y recursos para cuidar de ti.</p>
+             <!-- Aquí iría el contenido de bienestar con buscador y desplegables -->
+        </section>
+        
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="app-footer" id="appFooter">
+        <!-- Los items se inyectarán aquí con JS -->
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- LÓGICA DEL HEADER ---
+            const header = document.getElementById('appHeader');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // --- LÓGICA DEL FORMULARIO MULTI-PASO ---
+            const profileRadios = document.querySelectorAll('input[name="profile"]');
+            const btnNextProfile = document.getElementById('btn-next-profile');
+            
+            let selectedProfile = null;
+
+            profileRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    selectedProfile = e.target.value;
+                    btnNextProfile.disabled = false;
+                });
+            });
+
+            btnNextProfile.addEventListener('click', () => {
+                if (selectedProfile) {
+                    goToStep('step-specific');
+                    setupSpecificStep(selectedProfile);
+                    setupFooter(selectedProfile);
+                }
+            });
+        });
+
+        function goToStep(stepId) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('.step-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            // Mostrar la sección deseada
+            const nextStep = document.getElementById(stepId);
+            if(nextStep) {
+                nextStep.classList.add('active');
+                window.scrollTo(0, 0);
+            }
+        }
+        
+        function setupSpecificStep(profile) {
+            const contentDiv = document.getElementById('specific-content');
+            let title = '';
+            let description = '';
+            
+            switch(profile) {
+                case 'renal':
+                    title = 'BCM (Balance Hídrico)';
+                    description = 'Registra aquí tu peso seco y la ingesta/pérdida de líquidos para un control preciso.';
+                    break;
+                case 'cardiaco':
+                    title = 'Cardiología';
+                    description = 'Monitorea tu presión arterial, frecuencia cardíaca y otros indicadores vitales.';
+                    break;
+                case 'atm':
+                    title = 'Apoyo ATM Leve';
+                    description = 'Herramientas y rutinas para gestionar estímulos y mantener el bienestar diario.';
+                    break;
+                case 'otro':
+                    title = 'Medical General';
+                    description = 'Un espacio flexible para registrar tus indicadores de salud generales.';
+                    break;
+            }
+            
+            contentDiv.innerHTML = `
+                <h2>${title}</h2>
+                <p class="subtitle">${description}</p>
+                <!-- Aquí puedes agregar los campos de formulario específicos para cada perfil -->
+            `;
+        }
+        
+        function setupFooter(profile) {
+            const footer = document.getElementById('appFooter');
+            footer.style.display = 'flex';
+            let footerItems = '';
+            
+            // Definimos los items del footer basados en el perfil
+            const items = {
+                renal: [
+                    { icon: '💧', text: 'BCM', target: 'step-specific' },
+                    { icon: '💊', text: 'Med/tos', target: 'step-meds' },
+                    { icon: '📅', text: 'Citas', target: 'step-appointments' },
+                ],
+                cardiaco: [
+                    { icon: '❤️', text: 'Cardio', target: 'step-specific' },
+                    { icon: '💊', text: 'Med/tos', target: 'step-meds' },
+                    { icon: '📅', text: 'Citas', target: 'step-appointments' },
+                ],
+                atm: [
+                    { icon: '🧩', text: 'ATM', target: 'step-specific' },
+                    { icon: '💊', text: 'Med/tos', target: 'step-meds' },
+                    { icon: '📅', text: 'Citas', target: 'step-appointments' },
+                ],
+                otro: [
+                    { icon: '➕', text: 'Medical', target: 'step-specific' },
+                    { icon: '💊', text: 'Med/tos', target: 'step-meds' },
+                    { icon: '📅', text: 'Citas', target: 'step-appointments' },
+                ]
+            };
+            
+            const commonItems = [
+                 { 
+                    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="6.5" r="1.5"/><circle cx="12" cy="17.5" r="1.5"/></svg>`, 
+                    text: 'Menú' 
+                }
+            ];
+            
+            const profileItems = items[profile] || items['otro'];
+            
+            profileItems.forEach(item => {
+                footerItems += `
+                    <a href="#" class="footer-item" onclick="event.preventDefault(); goToStep('${item.target}')">
+                        <div class="icon">${item.icon}</div>
+                        <span>${item.text}</span>
+                    </a>
+                `;
+            });
+
+            // Añadir el menú de 3 puntos
+            footerItems += `
+                 <a href="#" class="footer-item" id="menu-extra">
+                    ${commonItems[0].icon}
+                    <span>${commonItems[0].text}</span>
+                </a>
+            `;
+            
+            footer.innerHTML = footerItems;
+            
+            // Aquí se añadiría la lógica para el menú emergente de 3 puntos
+        }
+
+        function saveData() {
+            // Aquí irá la lógica para guardar los datos en Firebase
+            alert('¡Datos guardados con éxito! (Simulación)');
+            goToStep('step-profile'); // Volver al inicio o a un dashboard
+            document.getElementById('appFooter').style.display = 'none'; // Ocultar footer
+        }
+
+    </script>
+</body>
+</html>
