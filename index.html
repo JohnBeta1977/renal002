@@ -157,6 +157,9 @@
             padding: 8px 12px;
             border-radius: 8px;
             transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .settings-menu a:hover {
@@ -249,7 +252,39 @@
         .profile-options .text {
             font-weight: 600;
         }
+        
+        .profile-details-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
 
+        .profile-details-grid .form-group {
+            margin-bottom: 0;
+        }
+
+        .row-group {
+            display: flex;
+            gap: 20px;
+            align-items: flex-end;
+        }
+        .row-group .form-group {
+            flex: 1;
+        }
+        
+        .multi-checkbox {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .multi-checkbox label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        
         /* Estilos para los campos de los formularios */
         .form-group {
             margin-bottom: 20px;
@@ -261,7 +296,7 @@
             font-weight: 600;
         }
         
-        .form-group input, .form-group textarea {
+        .form-group input, .form-group textarea, .form-group select {
             width: 100%;
             padding: 12px;
             border: 1px solid #CFD8DC;
@@ -270,11 +305,36 @@
             transition: border-color 0.3s ease;
         }
         
-        .form-group input:focus, .form-group textarea:focus {
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
             outline: none;
             border-color: var(--primary-color);
         }
         
+        .liquid-counter {
+            display: flex;
+            justify-content: space-between;
+            background-color: var(--bg-soft);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+        }
+        
+        .add-contact-btn, .add-activity-btn {
+            background-color: #64B5F6;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        .add-contact-btn:hover, .add-activity-btn:hover {
+             background-color: #42A5F5;
+             transform: translateY(-2px);
+        }
+
         /* Estilos para el área de Bienestar */
         .search-container {
             position: relative;
@@ -338,11 +398,64 @@
             max-height: 500px; /* Valor arbitrario grande */
             padding: 15px;
         }
+        
+        /* --- MODAL --- */
+        .modal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal {
+            background-color: var(--bg-light);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .modal-header h3 {
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .close-modal {
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--text-color);
+        }
 
         /* --- BOTONES --- */
         .button-container {
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-top: 30px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
         }
 
         .btn {
@@ -363,6 +476,16 @@
             0% { transform: scale(1); }
             50% { transform: scale(1.02); }
             100% { transform: scale(1); }
+        }
+        
+        .btn-back {
+            background: #B0BEC5;
+            color: var(--text-color);
+            padding: 15px 30px;
+        }
+        
+        .btn-back:hover {
+            background: #90A4AE;
         }
 
         .btn:hover {
@@ -530,10 +653,11 @@
             MedicalCare
         </div>
         <div class="header-settings" id="headerSettings">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.479,10.092c-0.262-0.94-0.635-1.822-1.116-2.636l1.04-2.34c0.236-0.53,0.078-1.163-0.382-1.48L17.54,2.155 c-0.459-0.318-1.071-0.239-1.448,0.188l-2.06,2.31c-0.869-0.393-1.791-0.674-2.756-0.817L11.01,1.353 c-0.126-0.587-0.638-1.02-1.255-1.02H8.241c-0.617,0-1.129,0.434-1.255,1.02L6.72,3.836C5.755,3.979,4.833,4.26,3.963,4.653 l-2.06-2.31c-0.377-0.426-0.989-0.506-1.448-0.188L-0.927,3.635c-0.46,0.317-0.618,0.95-0.382,1.48l1.04,2.34 C-0.732,8.27, -1.105,9.152,-1.367,10.092L-3.86,10.36c-0.587,0.127-1.02,0.638-1.02,1.255v2.788 c0,0.617,0.434,1.129,1.02,1.255l2.493,0.268c0.262,0.94,0.635,1.822,1.116,2.636l-1.04,2.34 c-0.236,0.53-0.078,1.163,0.382,1.48l1.482,1.022c0.459,0.318,1.071,0.239,1.448-0.188l2.06-2.31 c0.869,0.393,1.791,0.674,2.756,0.817l0.268,2.493c0.126,0.587,0.638,1.02,1.255,1.02h2.788c0.617,0,1.129-0.434,1.255-1.02 l0.268-2.493c0.965-0.143,1.887-0.424,2.756-0.817l2.06,2.31c0.377,0.426,0.989,0.506,1.448-0.188l1.482-1.022 c0.46-0.317,0.618-0.95,0.382-1.48l-1.04-2.34c0.481-0.814,0.854-1.696,1.116-2.636l2.493-0.268 c0.587-0.127,1.02-0.638,1.02-1.255V11.347c0-0.617-0.434-1.129-1.02-1.255L19.479,10.092z M12,15.5c-1.93,0-3.5-1.57-3.5-3.5 s1.57-3.5,3.5-3.5s3.5,1.57,3.5,3.5S13.93,15.5,12,15.5z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19.479,10.092c-0.262-0.94-0.635-1.822-1.116-2.636l1.04-2.34c0.236-0.53,0.078-1.163-0.382-1.48L17.54,2.155 c-0.459-0.318-1.071-0.239-1.448,0.188l-2.06,2.31c-0.869-0.393-1.791-0.674-2.756-0.817L11.01,1.353 c-0.126-0.587-0.638-1.02-1.255-1.02H8.241c-0.617,0-1.129,0.434-1.255,1.02L6.72,3.836C5.755,3.979,4.833,4.26,3.963,4.653 l-2.06-2.31c-0.377-0.426-0.989-0.506-1.448-0.188L-0.927,3.635c-0.46,0.317-0.618,0.95-0.382,1.48l1.04,2.34 C-0.732,8.27, -1.105,9.152,-1.367,10.092L-3.86,10.36c-0.587,0.127-1.02,0.638-1.02,1.255v2.788 c0,0.617,0.434,1.129,1.02,1.255l2.493,0.268c0.262,0.94,0.635,1.822,1.116,2.636l-1.04,2.34 c-0.236,0.53-0.078,1.163,0.382,1.48l1.482,1.022c-0.459,0.318,1.071,0.239,1.448-0.188l2.06-2.31 c0.869,0.393,1.791,0.674,2.756,0.817l0.268,2.493c0.126,0.587,0.638,1.02,1.255,1.02h2.788c0.617,0,1.129-0.434,1.255-1.02 l0.268-2.493c0.965-0.143,1.887-0.424,2.756-0.817l2.06,2.31c0.377,0.426,0.989,0.506,1.448-0.188l1.482-1.022 c0.46-0.317,0.618-0.95,0.382-1.48l-1.04-2.34c0.481-0.814,0.854-1.696,1.116-2.636l2.493-0.268 c0.587-0.127,1.02-0.638,1.02-1.255V11.347c0-0.617-0.434-1.129-1.02-1.255L19.479,10.092z M12,15.5c-1.93,0-3.5-1.57-3.5-3.5 s1.57-3.5,3.5-3.5s3.5,1.57,3.5,3.5S13.93,15.5,12,15.5z"/></svg>
             <div class="settings-menu" id="settingsMenu">
                 <a href="#" id="about-link"><i class="fa-solid fa-info-circle"></i> Quiénes Somos</a>
                 <a href="#" id="faq-link"><i class="fa-solid fa-question-circle"></i> Preguntas Frecuentes</a>
+                <a href="#" onclick="event.preventDefault(); shareApp();"><i class="fa-solid fa-share-nodes"></i> Compartir App</a>
             </div>
         </div>
     </header>
@@ -594,65 +718,232 @@
             </div>
         </section>
 
-        <!-- PASO 2: SECCIONES ESPECÍFICAS -->
+        <!-- PASO 2: PERFIL DE USUARIO DETALLADO -->
+        <section id="step-profile-details" class="step-section">
+            <h2>Perfil de Usuario</h2>
+            <p class="subtitle">Por favor, completa tus datos personales para continuar.</p>
+            <form id="profile-details-form">
+                <div class="profile-details-grid">
+                    <div class="form-group">
+                        <label for="full-name">Nombre Completo <span style="color: red;">*</span></label>
+                        <input type="text" id="full-name" required>
+                    </div>
+                    <div class="row-group">
+                        <div class="form-group">
+                            <label for="blood-type">Tipo de sangre <span style="color: red;">*</span></label>
+                            <select id="blood-type" required>
+                                <option value="">Selecciona...</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="weight">Peso (kg) <span style="color: red;">*</span></label>
+                            <input type="number" id="weight" step="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="height">Estatura (cm) <span style="color: red;">*</span></label>
+                            <input type="number" id="height" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="medical-condition">Condición Médica: <span style="color: red;">*</span></label>
+                        <select id="medical-condition" required>
+                            <option value="hemodialisis">Hemodiálisis</option>
+                            <option value="peritoneal">Peritoneal</option>
+                            <option value="cardiologia">Cardiología</option>
+                            <option value="atm">ATM Leve</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    
+                    <div class="row-group">
+                        <div class="form-group">
+                            <label>Catéter: <span style="color: red;">*</span></label>
+                            <div class="row-group">
+                                <label><input type="radio" name="catheter" value="si"> Si</label>
+                                <label><input type="radio" name="catheter" value="no" checked> No</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Fístula: <span style="color: red;">*</span></label>
+                            <div class="row-group">
+                                <label><input type="radio" name="fistula" value="si"> Si</label>
+                                <label><input type="radio" name="fistula" value="no" checked> No</label>
+                            </div>
+                        </div>
+                        <div class="form-group" id="fistula-location-container" style="display: none;">
+                            <label for="fistula-location">¿Dónde?</label>
+                            <input type="text" id="fistula-location" placeholder="Ej: Brazo izquierdo">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="dialysis-days-container" style="display: none;">
+                        <label>Días de Hemodiálisis:</label>
+                        <div class="multi-checkbox">
+                            <label><input type="checkbox" name="dialysis-day" value="lunes"> Lunes</label>
+                            <label><input type="checkbox" name="dialysis-day" value="martes"> Martes</label>
+                            <label><input type="checkbox" name="dialysis-day" value="miercoles"> Miércoles</label>
+                            <label><input type="checkbox" name="dialysis-day" value="jueves"> Jueves</label>
+                            <label><input type="checkbox" name="dialysis-day" value="viernes"> Viernes</label>
+                            <label><input type="checkbox" name="dialysis-day" value="sabado"> Sábado</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="dialysis-time-container" style="display: none;">
+                        <label for="dialysis-time">Hora de Hemodiálisis</label>
+                        <input type="time" id="dialysis-time">
+                    </div>
+                    <div class="form-group" id="dialysis-clinic-container" style="display: none;">
+                        <label for="dialysis-clinic">Clínica de Hemodiálisis</label>
+                        <input type="text" id="dialysis-clinic" placeholder="Nombre de la clínica">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eps">EPS <span style="color: red;">*</span></label>
+                        <input type="text" id="eps" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eps-phone">Teléfono EPS <span style="color: red;">*</span></label>
+                        <input type="tel" id="eps-phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="caregiver">Acompañante o cuidador/a <span style="color: red;">*</span></label>
+                        <input type="text" id="caregiver" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="emergency-contact">Contacto de Emergencia <span style="color: red;">*</span></label>
+                        <input type="tel" id="emergency-contact" required>
+                    </div>
+                </div>
+            </form>
+            <div class="button-container">
+                <button class="btn btn-back" onclick="goToStep('step-profile')">Atrás</button>
+                <button class="btn" id="btn-save-profile">Guardar formulario</button>
+            </div>
+        </section>
+
+        <!-- PASO 3: SECCIONES ESPECÍFICAS (AHORA DESPUÉS DEL PERFIL DETALLADO) -->
         <section id="step-specific" class="step-section">
             <div id="specific-content"></div>
             <div class="button-container">
+                <button class="btn btn-back" onclick="goToStep('step-profile-details')">Atrás</button>
                 <button class="btn" onclick="goToStep('step-meds')">Siguiente</button>
             </div>
         </section>
 
-        <!-- PASO 3: MEDICAMENTOS -->
+        <!-- PASO 4: MEDICAMENTOS -->
         <section id="step-meds" class="step-section">
             <h2>Medicamentos (Med/tos)</h2>
             <p class="subtitle">Gestiona aquí tu lista de medicamentos y recordatorios.</p>
-            <div class="form-group">
-                <label for="med-name">Nombre del medicamento</label>
-                <input type="text" id="med-name" placeholder="Ej: Losartán">
+            <div id="meds-container">
+                <!-- Contenido de medicamentos inyectado por JS -->
+                <div class="med-item">
+                    <div class="form-group">
+                        <label for="med-name-1">Nombre del medicamento</label>
+                        <input type="text" id="med-name-1" placeholder="Ej: Losartán">
+                    </div>
+                    <div class="row-group">
+                        <div class="form-group">
+                            <label for="med-dose-1">Dosis</label>
+                            <input type="text" id="med-dose-1" placeholder="Ej: 50mg">
+                        </div>
+                        <div class="form-group">
+                            <label for="med-frequency-1">Frecuencia</label>
+                            <select id="med-frequency-1">
+                                <option value="1">1 vez al día</option>
+                                <option value="2">2 veces al día</option>
+                                <option value="3">3 veces al día</option>
+                                <option value="4">4 veces al día</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="med-hours-container-1">
+                        <label>Hora(s)</label>
+                        <input type="time" class="med-hour-1">
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="med-dose">Dosis</label>
-                <input type="text" id="med-dose" placeholder="Ej: 50mg, una vez al día">
-            </div>
-            <!-- Más campos si son necesarios -->
             <div class="button-container">
+                <button class="btn btn-back" onclick="goToStep('step-specific')">Atrás</button>
                 <button class="btn" onclick="goToStep('step-appointments')">Siguiente</button>
             </div>
         </section>
         
-        <!-- PASO 4: CITAS Y LABORATORIOS -->
+        <!-- PASO 5: CITAS Y LABORATORIOS -->
         <section id="step-appointments" class="step-section">
             <h2>Citas y Laboratorios</h2>
             <p class="subtitle">Lleva un registro de tus próximas citas médicas y resultados.</p>
-            <div class="form-group">
-                <label for="appointment-date">Fecha de la cita</label>
-                <input type="date" id="appointment-date">
+            <div id="appointments-container">
+                <!-- Contenido inyectado por JS -->
+                <div class="appointment-item">
+                    <div class="form-group">
+                        <label for="appointment-name-1">Nombre de la cita</label>
+                        <input type="text" id="appointment-name-1" placeholder="Ej: Cita con Nefrólogo">
+                    </div>
+                    <div class="row-group">
+                        <div class="form-group">
+                            <label for="appointment-date-1">Fecha</label>
+                            <input type="date" id="appointment-date-1">
+                        </div>
+                        <div class="form-group">
+                            <label for="appointment-time-1">Hora</label>
+                            <input type="time" id="appointment-time-1">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="appointment-location-1">Lugar</label>
+                        <input type="text" id="appointment-location-1" placeholder="Ej: Clínica Los Alpes">
+                    </div>
+                    <div class="form-group">
+                        <label for="appointment-companion-1">Acompañante</label>
+                        <input type="text" id="appointment-companion-1" placeholder="Ej: Juan Pérez">
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" id="appointment-attended-1"> ¿Asistió a la cita?</label>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="appointment-description">Descripción</label>
-                <textarea id="appointment-description" rows="3" placeholder="Ej: Cita con nefrólogo para revisión de creatinina"></textarea>
-            </div>
-            <!-- Más campos si son necesarios -->
             <div class="button-container">
+                <button class="btn btn-back" onclick="goToStep('step-meds')">Atrás</button>
                 <button class="btn" onclick="goToStep('step-agenda')">Siguiente</button>
             </div>
         </section>
         
-        <!-- PASO 5: AGENDA -->
+        <!-- PASO 6: AGENDA -->
         <section id="step-agenda" class="step-section">
             <h2>Agenda</h2>
             <p class="subtitle">Guarda aquí tus números y contactos importantes.</p>
-            <div class="form-group">
-                <label for="contact-name">Nombre</label>
-                <input type="text" id="contact-name" placeholder="Ej: Dr. Pérez (Cardiólogo)">
+            <div id="contacts-container">
+                <!-- Contenido de contactos inyectado por JS -->
+                <div class="contact-item">
+                    <div class="form-group">
+                        <label for="contact-name-1">Nombre</label>
+                        <input type="text" id="contact-name-1" placeholder="Ej: Dr. Pérez (Cardiólogo)">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-profession-1">Profesión y/o parentesco</label>
+                        <input type="text" id="contact-profession-1" placeholder="Ej: Nefrólogo">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-number-1">Teléfono</label>
+                        <input type="tel" id="contact-number-1" placeholder="Ej: +57 300 123 4567">
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="contact-number">Teléfono</label>
-                <input type="tel" id="contact-number" placeholder="Ej: +57 300 123 4567">
-            </div>
-            <!-- Más campos si son necesarios -->
             <div class="button-container">
-                <button class="btn" onclick="saveData()">Guardar</button>
+                 <button class="add-contact-btn" id="add-contact-btn">Agregar otro contacto</button>
+                 <div class="btn-group">
+                     <button class="btn btn-back" onclick="goToStep('step-appointments')">Atrás</button>
+                     <button class="btn" onclick="saveData()">Guardar</button>
+                 </div>
             </div>
         </section>
         
@@ -670,7 +961,7 @@
              </div>
         </section>
         
-        <!-- SECCIÓN DE PERFIL (Accesible desde el footer/menú) -->
+        <!-- SECCIÓN DE RESUMEN DE PERFIL (Accesible desde el footer/menú) -->
         <section id="section-profile-summary" class="step-section">
              <h2>Resumen de Perfil</h2>
              <p class="subtitle">Un vistazo rápido a tu información de salud.</p>
@@ -771,7 +1062,6 @@
             // --- LÓGICA DEL FORMULARIO MULTI-PASO ---
             const profileRadios = document.querySelectorAll('input[name="profile"]');
             const btnNextProfile = document.getElementById('btn-next-profile');
-            
             let selectedProfile = null;
 
             profileRadios.forEach(radio => {
@@ -783,32 +1073,72 @@
 
             btnNextProfile.addEventListener('click', () => {
                 if (selectedProfile) {
-                    goToStep('step-specific');
-                    setupSpecificStep(selectedProfile);
+                    goToStep('step-profile-details');
                     setupFooter(selectedProfile);
                     setupBienestarContent(selectedProfile);
+                    // Ocultar/mostrar campos específicos del perfil
+                    const condition = document.getElementById('medical-condition');
+                    const fistulaContainer = document.getElementById('fistula-location-container');
+                    const dialysisDaysContainer = document.getElementById('dialysis-days-container');
+                    const dialysisTimeContainer = document.getElementById('dialysis-time-container');
+                    const dialysisClinicContainer = document.getElementById('dialysis-clinic-container');
+
+                    condition.value = selectedProfile === 'renal' ? 'hemodialisis' : selectedProfile;
+                    
+                    if (selectedProfile === 'renal') {
+                        dialysisDaysContainer.style.display = 'block';
+                        dialysisTimeContainer.style.display = 'block';
+                        dialysisClinicContainer.style.display = 'block';
+                    } else {
+                        dialysisDaysContainer.style.display = 'none';
+                        dialysisTimeContainer.style.display = 'none';
+                        dialysisClinicContainer.style.display = 'none';
+                    }
+                }
+            });
+
+            // Lógica para mostrar/ocultar el campo de fístula
+            document.querySelectorAll('input[name="fistula"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    document.getElementById('fistula-location-container').style.display = e.target.value === 'si' ? 'block' : 'none';
+                });
+            });
+
+            // Lógica para guardar el perfil y pasar a la siguiente sección
+            document.getElementById('btn-save-profile').addEventListener('click', () => {
+                 // Validar el formulario del perfil aquí antes de continuar
+                 const profileForm = document.getElementById('profile-details-form');
+                 if (profileForm.checkValidity()) {
+                    goToStep('step-specific');
+                    setupSpecificStep(selectedProfile);
+                 } else {
+                     showMessage('Por favor, completa todos los campos obligatorios.');
+                 }
+            });
+            
+            // Lógica dinámica para los medicamentos
+            document.getElementById('meds-container').addEventListener('change', (e) => {
+                if (e.target.matches('select')) {
+                    const frequency = parseInt(e.target.value);
+                    const container = e.target.closest('.med-item').querySelector('[id^="med-hours-container-"]');
+                    container.innerHTML = '<label>Hora(s)</label>';
+                    for (let i = 0; i < frequency; i++) {
+                        const input = document.createElement('input');
+                        input.type = 'time';
+                        input.className = `med-hour-${e.target.id.split('-')[2]}`;
+                        container.appendChild(input);
+                    }
                 }
             });
             
-            // --- LÓGICA DEL FOOTER ---
-            const footerMenuModal = document.getElementById('footerMenuModal');
-            
-            document.getElementById('appFooter').addEventListener('click', (e) => {
-                // Cierra el modal si se hace clic fuera
-                if (e.target.closest('#menu-extra')) {
-                    e.preventDefault();
-                    footerMenuModal.style.display = footerMenuModal.style.display === 'flex' ? 'none' : 'flex';
-                } else if (!e.target.closest('#footerMenuModal')) {
-                    footerMenuModal.style.display = 'none';
-                }
-            });
-            
-            // Cierra el modal si se hace clic en cualquier lugar fuera de él
-            document.addEventListener('click', (e) => {
-                const footerMenuModal = document.getElementById('footerMenuModal');
-                const menuExtra = document.getElementById('menu-extra');
-                if (footerMenuModal.style.display === 'flex' && !footerMenuModal.contains(e.target) && e.target !== menuExtra && !menuExtra.contains(e.target)) {
-                    footerMenuModal.style.display = 'none';
+            // Lógica dinámica para BCM (Renal)
+            document.addEventListener('input', (e) => {
+                if (e.target.id === 'liquido-limite' || e.target.id === 'liquido-ingerido') {
+                    const limite = parseFloat(document.getElementById('liquido-limite').value) || 0;
+                    const ingerido = parseFloat(document.getElementById('liquido-ingerido').value) || 0;
+                    const faltante = limite - ingerido;
+                    document.getElementById('liquido-ingerido-value').textContent = `${ingerido} ml`;
+                    document.getElementById('liquido-faltante-value').textContent = `${faltante} ml`;
                 }
             });
             
@@ -820,6 +1150,15 @@
                     const isActive = header.classList.toggle('active');
                     content.classList.toggle('active');
                 }
+            });
+            
+            // Llamamos a la función setupAgenda cuando se navega a la sección de agenda
+            document.querySelector('.step-section[id="step-appointments"] .btn:last-child').addEventListener('click', () => {
+                setupAgenda();
+            });
+
+            document.querySelector('.step-section[id="step-agenda"] .btn-back').addEventListener('click', () => {
+                goToStep('step-appointments');
             });
         });
 
@@ -856,18 +1195,24 @@
                 case 'renal':
                     contentHTML = `
                         <h2>BCM (Balance Hídrico)</h2>
-                        <p class="subtitle">Registra aquí tu peso seco y la ingesta/pérdida de líquidos para un control preciso.</p>
+                        <p class="subtitle">Registra aquí tu peso seco y la ingesta de líquidos.</p>
                         <div class="form-group">
                             <label for="peso-seco">Peso seco (kg)</label>
                             <input type="number" id="peso-seco" placeholder="Ej: 70.5">
                         </div>
-                        <div class="form-group">
-                            <label for="liquidos-ingesta">Líquidos ingeridos (ml)</label>
-                            <input type="number" id="liquidos-ingesta" placeholder="Ej: 1500">
+                        <div class="row-group">
+                            <div class="form-group">
+                                <label for="liquido-limite">Líquido límite (ml)</label>
+                                <input type="number" id="liquido-limite" placeholder="Ej: 1000">
+                            </div>
+                            <div class="form-group">
+                                <label for="liquido-ingerido">Líquido ingerido (ml)</label>
+                                <input type="number" id="liquido-ingerido" placeholder="Ej: 500">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="liquidos-perdida">Líquidos perdidos (ml)</label>
-                            <input type="number" id="liquidos-perdida" placeholder="Ej: 800">
+                        <div class="liquid-counter">
+                            <span>Ingerido: <span id="liquido-ingerido-value">0 ml</span></span>
+                            <span>Faltante: <span id="liquido-faltante-value">0 ml</span></span>
                         </div>
                     `;
                     break;
@@ -876,16 +1221,28 @@
                         <h2>Cardiología</h2>
                         <p class="subtitle">Monitorea tu presión arterial, frecuencia cardíaca y otros indicadores vitales.</p>
                         <div class="form-group">
-                            <label for="presion-sistolica">Presión Sistólica (mmHg)</label>
-                            <input type="number" id="presion-sistolica" placeholder="Ej: 120">
+                            <label for="peso-corporal">Peso corporal (kg)</label>
+                            <input type="number" id="peso-corporal" placeholder="Ej: 75.2">
                         </div>
-                        <div class="form-group">
-                            <label for="presion-diastolica">Presión Diastólica (mmHg)</label>
-                            <input type="number" id="presion-diastolica" placeholder="Ej: 80">
+                        <div class="row-group">
+                            <div class="form-group">
+                                <label for="colesterol-ldl">Colesterol LDL (mg/dL)</label>
+                                <input type="number" id="colesterol-ldl" placeholder="Ej: 100">
+                            </div>
+                            <div class="form-group">
+                                <label for="colesterol-hdl">Colesterol HDL (mg/dL)</label>
+                                <input type="number" id="colesterol-hdl" placeholder="Ej: 50">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="frecuencia-cardiaca">Frecuencia Cardiaca (lpm)</label>
-                            <input type="number" id="frecuencia-cardiaca" placeholder="Ej: 75">
+                        <div class="row-group">
+                            <div class="form-group">
+                                <label for="nivel-azucar">Nivel Azúcar (mg/dL)</label>
+                                <input type="number" id="nivel-azucar" placeholder="Ej: 95">
+                            </div>
+                            <div class="form-group">
+                                <label for="presion-sistolica">Presión Sistólica (mmHg)</label>
+                                <input type="number" id="presion-sistolica" placeholder="Ej: 120">
+                            </div>
                         </div>
                     `;
                     break;
@@ -893,15 +1250,53 @@
                     contentHTML = `
                         <h2>Apoyo ATM Leve</h2>
                         <p class="subtitle">Herramientas y rutinas para gestionar estímulos y mantener el bienestar diario.</p>
-                        <div class="form-group">
-                            <label for="estimulos-dia">Estímulos del día</label>
-                            <textarea id="estimulos-dia" rows="3" placeholder="Ej: Ruido fuerte en la calle, luz brillante en el supermercado"></textarea>
+                        <div id="activities-container">
+                            <div class="activity-item">
+                                <div class="form-group">
+                                    <label for="activity-name-1">Actividad</label>
+                                    <input type="text" id="activity-name-1" placeholder="Ej: Ejercicio matutino">
+                                </div>
+                                <div class="row-group">
+                                    <div class="form-group">
+                                        <label for="activity-start-1">Hora inicio</label>
+                                        <input type="time" id="activity-start-1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="activity-end-1">Hora final</label>
+                                        <input type="time" id="activity-end-1">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="rutina-dia">Rutina de hoy</label>
-                            <textarea id="rutina-dia" rows="3" placeholder="Ej: Mañana: ejercicio, Tarde: lectura, Noche: meditación"></textarea>
-                        </div>
+                        <button class="add-activity-btn" id="add-activity-btn">Agregar otra actividad</button>
                     `;
+                    // Lógica para el botón de agregar actividad, se mueve aquí
+                    setTimeout(() => { // Usar un timeout para asegurar que el elemento esté en el DOM
+                        let activityCount = 1;
+                        document.getElementById('add-activity-btn').addEventListener('click', () => {
+                            activityCount++;
+                            const container = document.getElementById('activities-container');
+                            const newActivity = document.createElement('div');
+                            newActivity.className = 'activity-item';
+                            newActivity.innerHTML = `
+                                <div class="form-group">
+                                    <label for="activity-name-${activityCount}">Actividad</label>
+                                    <input type="text" id="activity-name-${activityCount}" placeholder="Ej: Ejercicio matutino">
+                                </div>
+                                <div class="row-group">
+                                    <div class="form-group">
+                                        <label for="activity-start-${activityCount}">Hora inicio</label>
+                                        <input type="time" id="activity-start-${activityCount}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="activity-end-${activityCount}">Hora final</label>
+                                        <input type="time" id="activity-end-${activityCount}">
+                                    </div>
+                                </div>
+                            `;
+                            container.appendChild(newActivity);
+                        });
+                    }, 0);
                     break;
                 case 'otro':
                     contentHTML = `
@@ -936,47 +1331,47 @@
             
             const items = {
                 'renal': [
+                    { icon: '<i class="fa-solid fa-user"></i>', text: 'Perfil', target: 'section-profile-summary' },
                     { icon: profileIcons[profile], text: 'BCM', target: 'step-specific' },
                     { icon: '<i class="fa-solid fa-pills"></i>', text: 'Med/tos', target: 'step-meds' },
-                    { icon: '<i class="fa-solid fa-calendar-check"></i>', text: 'Citas', target: 'step-appointments' },
                 ],
                 'cardiaco': [
+                    { icon: '<i class="fa-solid fa-user"></i>', text: 'Perfil', target: 'section-profile-summary' },
                     { icon: profileIcons[profile], text: 'Cardio', target: 'step-specific' },
                     { icon: '<i class="fa-solid fa-pills"></i>', text: 'Med/tos', target: 'step-meds' },
-                    { icon: '<i class="fa-solid fa-calendar-check"></i>', text: 'Citas', target: 'step-appointments' },
                 ],
                 'atm': [
+                    { icon: '<i class="fa-solid fa-user"></i>', text: 'Perfil', target: 'section-profile-summary' },
                     { icon: profileIcons[profile], text: 'ATM', target: 'step-specific' },
                     { icon: '<i class="fa-solid fa-pills"></i>', text: 'Med/tos', target: 'step-meds' },
-                    { icon: '<i class="fa-solid fa-calendar-check"></i>', text: 'Citas', target: 'step-appointments' },
                 ],
                 'otro': [
+                    { icon: '<i class="fa-solid fa-user"></i>', text: 'Perfil', target: 'section-profile-summary' },
                     { icon: profileIcons[profile], text: 'Medical', target: 'step-specific' },
                     { icon: '<i class="fa-solid fa-pills"></i>', text: 'Med/tos', target: 'step-meds' },
-                    { icon: '<i class="fa-solid fa-calendar-check"></i>', text: 'Citas', target: 'step-appointments' },
                 ]
             };
             
             const commonItems = [
                  { 
-                    icon: '<i class="fa-solid fa-share-nodes"></i>', 
-                    text: 'Compartir', 
-                    target: 'share'
+                    icon: '<i class="fa-solid fa-calendar-alt"></i>',
+                    text: 'Citas',
+                    target: 'step-appointments'
                  },
                  { 
-                    icon: '<i class="fa-solid fa-user"></i>',
-                    text: 'Perfil',
-                    target: 'section-profile-summary'
+                    icon: '<i class="fa-solid fa-calendar-alt"></i>',
+                    text: 'Agenda',
+                    target: 'step-agenda'
                  },
                  {
-                    icon: '<i class="fa-solid fa-book-open"></i>',
+                    icon: '<i class="fa-solid fa-leaf"></i>',
                     text: 'Bienestar',
                     target: 'section-bienestar'
                  },
                  {
-                    icon: '<i class="fa-solid fa-calendar-alt"></i>',
-                    text: 'Agenda',
-                    target: 'step-agenda'
+                    icon: '<i class="fa-solid fa-share-nodes"></i>', 
+                    text: 'Compartir', 
+                    target: 'share'
                  }
             ];
             
@@ -1019,21 +1414,29 @@
                      footerMenuModal.appendChild(shareButton);
                 } else {
                     footerMenuModal.innerHTML += `
-                        <a href="#" onclick="event.preventDefault(); goToStep('${item.target}')">
+                        <a href="#" data-target="${item.target}" onclick="event.preventDefault(); goToStep('${item.target}')">
                             <div class="icon">${item.icon}</div><span>${item.text}</span>
                         </a>
                     `;
                 }
             });
             
-            // Si el perfil es 'renal', 'cardiaco', o 'atm', el perfil principal tiene su propia sección
-            // Así que no necesitamos el enlace 'Perfil' en el menú extra.
-            if (profileItems[0].target === 'step-specific') {
-                 const profileLink = footerMenuModal.querySelector('[data-target="section-profile-summary"]');
-                 if (profileLink) {
-                     profileLink.remove();
-                 }
-            }
+            // Lógica para abrir/cerrar el menú extra del footer. Movida aquí.
+            document.getElementById('appFooter').addEventListener('click', (e) => {
+                if (e.target.closest('#menu-extra')) {
+                    e.preventDefault();
+                    footerMenuModal.style.display = footerMenuModal.style.display === 'flex' ? 'none' : 'flex';
+                } else if (!e.target.closest('#footerMenuModal')) {
+                    footerMenuModal.style.display = 'none';
+                }
+            });
+            
+            document.addEventListener('click', (e) => {
+                const menuExtra = document.getElementById('menu-extra');
+                if (footerMenuModal.style.display === 'flex' && !footerMenuModal.contains(e.target) && e.target !== menuExtra && !menuExtra.contains(e.target)) {
+                    footerMenuModal.style.display = 'none';
+                }
+            });
         }
         
         function setupBienestarContent(profile) {
@@ -1079,6 +1482,35 @@
             accordionDiv.innerHTML = contentHTML;
         }
 
+        // Lógica dinámica para la Agenda, movida a su propia función
+        function setupAgenda() {
+            let contactCount = 1;
+            const addContactBtn = document.getElementById('add-contact-btn');
+            if(addContactBtn) {
+                 addContactBtn.addEventListener('click', () => {
+                     contactCount++;
+                     const container = document.getElementById('contacts-container');
+                     const newContact = document.createElement('div');
+                     newContact.className = 'contact-item';
+                     newContact.innerHTML = `
+                         <div class="form-group">
+                             <label for="contact-name-${contactCount}">Nombre</label>
+                             <input type="text" id="contact-name-${contactCount}" placeholder="Ej: Dr. Pérez (Cardiólogo)">
+                         </div>
+                         <div class="form-group">
+                             <label for="contact-profession-${contactCount}">Profesión y/o parentesco</label>
+                             <input type="text" id="contact-profession-${contactCount}" placeholder="Ej: Nefrólogo">
+                         </div>
+                         <div class="form-group">
+                             <label for="contact-number-${contactCount}">Teléfono</label>
+                             <input type="tel" id="contact-number-${contactCount}" placeholder="Ej: +57 300 123 4567">
+                         </div>
+                     `;
+                     container.appendChild(newContact);
+                 });
+            }
+        }
+        
         function saveData() {
             // Aquí irá la lógica para guardar los datos en Firebase
             // (Esta parte se implementará en la fase de back-end)
