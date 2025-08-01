@@ -1545,5 +1545,33 @@
         }
         
     </script>
+<!--- credenciales de firebase-->
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+
+<script>
+  // Tu configuración de Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyCt-gYdvPvUId9Uv7_LlzMDRNozuQre6aU",
+    authDomain: "rnl01-8d925.firebaseapp.com",
+    projectId: "rnl01-8d925",
+    storageBucket: "rnl01-8d925.firebasestorage.app",
+    messagingSenderId: "176287262226",
+    appId: "1:176287262226:web:a3a62140b8a974a3031acb",
+    measurementId: "G-8F1ZZP1007"
+  };
+
+  // Inicializa Firebase
+  firebase.initializeApp(firebaseConfig);
+  // Inicializa Analytics
+  if ('measurementId' in firebaseConfig) {
+    firebase.analytics();
+  }
+</script>
+<!-- cierre-->
 </body>
 </html>
